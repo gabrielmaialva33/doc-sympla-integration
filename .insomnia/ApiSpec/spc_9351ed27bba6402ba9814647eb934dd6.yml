@@ -1,0 +1,1298 @@
+_id: spc_9351ed27bba6402ba9814647eb934dd6
+type: ApiSpec
+parentId: wrk_b5a23e28943d43a7a81c1788b42d3b38
+modified: 1692382824724
+created: 1692382545422
+fileName: Sympla Integration 1.0.0
+contents: >
+  openapi: 3.0.3
+
+  info:
+    version: 1.0.0
+    title: Sympla Integration
+    description: Documentação da API da integração com a Sympla
+    contact:
+      name: Yazo Development
+      email: 'development@yazo.com.br'
+      url: https://www.yazo.com.br/#contato
+    license:
+      name: 'Yazo License'
+      url: https://www.yazo.com.br/politica-de-privacidade-e-termos-de-uso
+  servers:
+    - url: https://api.sympla.com.br
+      description: Servidor de Sympla
+
+  paths:
+    /public/v3/events:
+      get:
+        summary: Listar eventos
+        description: Retorna os eventos criados pelo organizador.
+        tags:
+          - Eventos
+        operationId: get.events
+        security:
+          - s_token: []
+        parameters:
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: from
+            description: Data no formato YYYY-MM-DD HH:mm:ss. Para filtrar todos os eventos que começam a partir da data informada
+            in: query
+            required: false
+            schema:
+              type: string
+              default: 2020-01-01 00:00:00
+          - name: published
+            description: Por padrão somente os eventos publicados serão listados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: 'true'
+          - name: page_size
+            description: Especifica quantos registros por página o usuário deseja. Mínimo 1 e maxímo 200.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 100
+          - name: page
+            description: Especifica qual página o usuário deseja visualizar. Mínimo 1.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 1
+          - name: field_sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: start_date
+          - name: sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: ASC
+              enum:
+                - ASC
+                - DESC
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Lista de eventos
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Evento'
+                    sort:
+                      $ref: '#/components/schemas/Sort'
+                    pagination:
+                      $ref: '#/components/schemas/Pagination'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}:
+      get:
+        summary: Listar evento por identificador
+        description: Retorna o evento correspondente ao identificador informado
+        tags:
+          - Eventos
+        operationId: get.event
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Evento
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Evento'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/orders:
+      get:
+        summary: Listar pedidos por evento
+        description: Retorna os pedidos de um determinado evento.
+        tags:
+          - Pedidos
+        operationId: get.orders
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: status
+            description: Retorna todos os pedidos com qualquer status. true Retorna os pedidos de todos os status; false Retorna apenas os pedidos com status "A".
+            in: query
+            required: false
+            schema:
+              type: string
+              default: 'true'
+              enum:
+                - 'true'
+                - 'false'
+          - name: page_size
+            description: Especifica quantos registros por página o usuário deseja. Mínimo 1 e maxímo 200.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 100
+          - name: page
+            description: Especifica qual página o usuário deseja visualizar. Mínimo 1.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 1
+          - name: field_sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: start_date
+          - name: sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: ASC
+              enum:
+                - ASC
+                - DESC
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Lista de pedidos
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Pedido'
+                    sort:
+                      $ref: '#/components/schemas/Sort'
+                    pagination:
+                      $ref: '#/components/schemas/Pagination'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/orders/{order_id}:
+      get:
+        summary: Listar pedido de um evento por identificador
+        description: Retorna o pedido correspondente ao identificador informado.
+        tags:
+          - Pedidos
+        operationId: get.order
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: order_id
+            in: path
+            description: ID do pedido
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Pedido
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/Pedido'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/orders/{order_id}/participants:
+      get:
+        summary: Listar participantes por pedido
+        description: Retorna o(s) participante(s) contido(s) em um determinado pedido.
+        tags:
+          - Participantes
+        operationId: get.participants
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: order_id
+            in: path
+            description: ID do pedido
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: cancelled
+            description: Especifica se deve incluir pedidos cancelados na busca.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: 'true'
+              enum:
+                - 'true'
+                - 'false'
+          - name: page_size
+            description: Especifica quantos registros por página o usuário deseja. Mínimo 1 e maxímo 200.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 100
+          - name: page
+            description: Especifica qual página o usuário deseja visualizar. Mínimo 1.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 1
+          - name: field_sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: start_date
+          - name: sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: ASC
+              enum:
+                - ASC
+                - DESC
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Lista de participantes
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/PedidoIngresso'
+                    sort:
+                      $ref: '#/components/schemas/Sort'
+                    pagination:
+                      $ref: '#/components/schemas/Pagination'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/participants:
+      get:
+        summary: Listar participantes por evento
+        description: Retorna os participantes de um determinado evento.
+        tags:
+          - Participantes
+        operationId: get.participants.per.event
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: page_size
+            description: Especifica quantos registros por página o usuário deseja. Mínimo 1 e maxímo 200.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 100
+          - name: page
+            description: Especifica qual página o usuário deseja visualizar. Mínimo 1.
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 1
+          - name: field_sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: start_date
+          - name: sort
+            description: Permite que os resultados sejam ordenados.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: ASC
+              enum:
+                - ASC
+                - DESC
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+          - name: cancelled_filter
+            description: Permite retornar participantes com status do pedido cancelado.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: none
+              enum:
+                - none
+                - include
+                - only
+          - name: ticket_number
+            description: Código escrito no ingresso. Este atributo não deverá ser utilizado com identificador único do ingresso, pois em caso de troca de titularidade esse código irá mudar..
+            in: query
+            required: false
+            schema:
+              type: string
+          - name: participant_email
+            description: Filtra o resultado de participantes conforme o e-mail informado. Ao usar em combinação com o ticket_number, deverá trazer somente os participantes com o e-mail informado vinculados ao ticket preenchido.
+            in: query
+            required: false
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Lista de participantes
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/PedidoIngresso'
+                    sort:
+                      $ref: '#/components/schemas/Sort'
+                    pagination:
+                      $ref: '#/components/schemas/Pagination'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/participants/{participant_id}:
+      get:
+        summary: Listar participante por id do ingresso
+        description: Retorna o participante correspondente ao ingresso informado.
+        tags:
+          - Participantes
+        operationId: get.participant
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: participant_id
+            in: path
+            description: ID do participante
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: cancelled_filter
+            description: Permite retornar participantes com status do pedido cancelado.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: none
+              enum:
+                - none
+                - include
+                - only
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Participante
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/PedidoIngresso'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/participants/ticketNumber/{ticket_number}:
+      get:
+        summary: Listar participante por número de ingresso
+        description: Retorna o participante correspondente ao ingresso informado.
+        tags:
+          - Participantes
+        operationId: get.participant.per.ticket_number
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: ticket_number
+            in: path
+            description: Número do ingresso
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+          - name: cancelled_filter
+            description: Permite retornar participantes com status do pedido cancelado.
+            in: query
+            required: false
+            schema:
+              type: string
+              default: none
+              enum:
+                - none
+                - include
+                - only
+          - name: fields
+            description: Deve ser utilizado para retornar apenas os atributos indicados do objeto. Os atributos indicados devem ser separados por ","
+            in: query
+            required: false
+            schema:
+              type: string
+              default: id,name
+        responses:
+          '200':
+            description: Participante
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/PedidoIngresso'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/participants/{participant_id}/checkIn:
+      post:
+        summary: Check-in por id do ingresso.
+        description: Realiza o check-in de um participante por id do ingresso.
+        tags:
+          - Participantes
+        operationId: post.check_in.participant_id
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: participant_id
+            in: path
+            description: ID do participante
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+        responses:
+          '200':
+            description: Check-in realizado com sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/PedidoIngresso'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '404':
+            description: Participante não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/participants/ticketNumber/{ticket_number}/checkIn:
+      post:
+        summary: Check-in por número do ingresso.
+        description: Realiza o check-in de um participante por número do ingresso.
+        tags:
+          - Participantes
+        operationId: post.check_in.ticket_number
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: ticket_number
+            in: path
+            description: Número do ingresso
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+        responses:
+          '200':
+            description: Check-in realizado com sucesso
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/PedidoIngresso'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '404':
+            description: Participante não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+    /public/v3/events/{event_id}/affiliates:
+      get:
+        summary: Listar afiliados por evento
+        description: Retorna os dados dos afiliados.
+        tags:
+          - Afiliados
+        operationId: get.affiliates
+        security:
+          - s_token: []
+        parameters:
+          - name: event_id
+            in: path
+            description: ID do evento
+            required: true
+            schema:
+              type: integer
+              default: 1
+          - name: Content-Type
+            in: header
+            description: 'application/json'
+            required: true
+            schema:
+              type: string
+              default: application/json
+        responses:
+          '200':
+            description: Afiliados
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    data:
+                      $ref: '#/components/schemas/ProgramaAfiliados'
+          '400':
+            description: Erro na requisição
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+          '401':
+            description: Token não encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+
+  tags:
+    - name: Eventos
+      description: Esta API fornece acesso às informações de eventos criados na plataforma Sympla, exclusivamente aqueles vinculados ao usuário proprietário do token.
+    - name: Pedidos
+      description: A API de pedidos proporciona informações de compras (ou inscrições, caso o evento seja gratuito) como dados de ingressos, participantes e pagamento. Um pedido pode conter mais de um ingresso e um ingresso está sempre associado a um único participante.
+    - name: Participantes
+      description: Com a API de participantes é possível obter informações relativas aos titulares dos ingressos do evento, como nome, e-mail e realizar check-in de um participante.
+    - name: Afiliados
+      description: Com a API de afiliados é possível obter informações relativas ao programa de afiliados e seus respectivos afiliados.
+  components:
+    securitySchemes:
+      s_token:
+        type: apiKey
+        name: s_token
+        in: header
+        description: Token de autenticação
+    schemas:
+      Evento:
+        type: object
+        properties:
+          id:
+            type: integer
+          start_date:
+            type: string
+            format: date-time
+          end_date:
+            type: string
+            format: date-time
+          name:
+            type: string
+          detail:
+            type: string
+          private_event:
+            type: integer
+          published:
+            type: integer
+          cancelled:
+            type: integer
+          image:
+            type: string
+            format: url
+          url:
+            type: string
+            format: url
+          address:
+            $ref: '#/components/schemas/Address'
+          host:
+            $ref: '#/components/schemas/Host'
+          category_prim:
+            $ref: '#/components/schemas/Category'
+          category_sec:
+            $ref: '#/components/schemas/Category'
+        example:
+          id: 1
+          start_date: 2018-09-21 22:00:00
+          end_date: 2018-09-22 12:00:01
+          name: Workshop da Sympla
+          detail: <b>Ola esse é um evento da Sympla</b><br><h1>Sejam todos bem-vindo</h1>
+          private_event: 1
+          published: 1
+          cancelled: 0
+          image: https://www.sympla.com.br/images/public/logo-sympla-new-blue@3x.png
+          url: https://www.sympla.com.br/festa-800__332504
+
+      Address:
+        type: object
+        properties:
+          name:
+            type: string
+          address:
+            type: string
+          address_num:
+            type: string
+          address_alt:
+            type: string
+          neighborhood:
+            type: string
+          city:
+            type: string
+          state:
+            type: string
+          zip_code:
+            type: string
+          country:
+            type: string
+        example:
+          name: Loja Contempo
+          address: Rua Fernandes Tourinho
+          address_num: AB45ER78
+          address_alt: 10º Andar
+          neighborhood: Funcionários
+          city: Belo Horizonte
+          state: MG
+          zip_code: 31112-000
+          country: BR
+
+      Host:
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+        example:
+          name: Sympla Eventos
+          description: Área responsável pela organização de eventos da empresa Sympla
+
+      Category:
+        type: object
+        properties:
+          name:
+            type: string
+        example:
+          name: encontro-networking
+
+      Pedido:
+        type: object
+        properties:
+          id:
+            type: string
+          event_id:
+            type: integer
+          order_date:
+            type: string
+            format: date-time
+          order_status:
+            type: string
+          updated_date:
+            type: string
+            format: date-time
+          approved_date:
+            type: string
+            format: date-time
+          discount_code:
+            type: string
+          transaction_type:
+            type: string
+          order_total_sale_price:
+            type: number
+            format: double
+          buyer_first_name:
+            type: string
+          buyer_last_name:
+            type: string
+          buyer_email:
+            type: string
+          invoice_info:
+            $ref: '#/components/schemas/InvoiceInfo'
+        example:
+          id: Q080KEE
+          event_id: 10203040
+          order_date: 2018-10-21 10:12:23
+          order_status: A
+          updated_date: 2018-10-10 23:34:21
+          approved_date: 2018-10-10 23:34:21
+          discount_code: 10,00% - desconto10
+          transaction_type: CREDIT_CARD
+          order_total_sale_price: 23.34
+          buyer_first_name: Joaquim
+          buyer_last_name: Lopes
+          buyer_email: meuemail@sympla.com.br
+          invoice_info:
+            doc_type: CPF
+            doc_number: 142.536.789-55
+            client_name: Joaquim
+            address_zip_code: 31112-000
+            address_street: Rua Fernandes Tourinho
+            address_street_number: '147'
+            address_street2: 10º Andar
+            address_neighborhood: Funcionários
+            address_city: Belo Horizonte
+            address_state: MG
+            mei: 0
+
+      InvoiceInfo:
+        type: object
+        properties:
+          doc_type:
+            type: string
+          doc_number:
+            type: string
+          client_name:
+            type: string
+          address_zip_code:
+            type: string
+          address_street:
+            type: string
+          address_street_number:
+            type: string
+          address_street2:
+            type: string
+          address_neighborhood:
+            type: string
+          address_city:
+            type: string
+          address_state:
+            type: string
+          mei:
+            type: integer
+        example:
+          doc_type: CPF
+          doc_number: 142.536.789-55
+          client_name: Joaquim
+          address_zip_code: 31112-000
+          address_street: Rua Fernandes Tourinho
+          address_street_number: '147'
+          address_street2: 10º Andar
+          address_neighborhood: Funcionários
+          address_city: Belo Horizonte
+          address_state: MG
+          mei: 0
+
+      PedidoIngresso:
+        type: object
+        properties:
+          id:
+            type: integer
+          event_id:
+            type: integer
+          order_id:
+            type: string
+          order_status:
+            type: string
+          order_date:
+            type: string
+            format: date-time
+          order_updated_date:
+            type: string
+            format: date-time
+          order_approved_date:
+            type: string
+            format: date-time
+          order_discount:
+            type: string
+          first_name:
+            type: string
+          last_name:
+            type: string
+          email:
+            type: string
+          ticket_number:
+            type: string
+          ticket_num_qr_code:
+            type: string
+          ticket_name:
+            type: string
+          pdv_user:
+            type: string
+          ticket_sale_price:
+            type: number
+            format: double
+          checkin:
+            $ref: '#/components/schemas/Checkin'
+          ondemand_progress:
+            $ref: '#/components/schemas/OndemandProgress'
+          custom_form:
+            $ref: '#/components/schemas/CustomForm'
+        example:
+          id: 102345
+          event_id: 10203040
+          order_id: BC1BA1
+          order_status: A
+          order_date: 2018-10-21 10:12:23
+          order_updated_date: 2018-10-21 15:12:23
+          order_approved_date: 2018-10-21 11:34:21
+          order_discount: 10,00% - desconto10
+          first_name: Joaquim
+          last_name: Lopes
+          email: meuemail@sympla.com.br
+          ticket_number: QHWA-1Q-3G0J
+          ticket_num_qr_code: QHWA1Q3G0J
+          ticket_name: VIP
+          pdv_user: meuemail@sympla.com.br
+          ticket_sale_price: 123.5
+          checkin:
+            id: 1
+            check_in: true
+            check_in_date: 2018-09-10T10:21:10-03:00
+          ondemand_progress:
+            percent_completed: 23.34
+            is_completed: true
+          custom_form:
+            id: 1
+            name: CPF
+            value: 142.536.789-55
+
+      Checkin:
+        type: object
+        properties:
+          id:
+            type: integer
+          check_in:
+            type: boolean
+          check_in_date:
+            type: string
+            format: date-time
+        example:
+          id: 1
+          check_in: true
+          check_in_date: 2018-09-10T10:21:10-03:00
+
+      OndemandProgress:
+        type: object
+        properties:
+          percent_completed:
+            type: number
+            format: double
+          is_completed:
+            type: boolean
+        example:
+          percent_completed: 23.34
+          is_completed: true
+
+      CustomForm:
+        type: object
+        properties:
+          id:
+            type: integer
+          name:
+            type: string
+          value:
+            type: string
+        example:
+          id: 1
+          name: CPF
+          value: 142.536.789-55
+
+      ProgramaAfiliados:
+        type: object
+        properties:
+          name:
+            type: string
+          comission_type:
+            type: string
+          comission_value:
+            type: number
+            format: double
+          has_limit:
+            type: integer
+          limit:
+            type: integer
+          affiliates:
+            type: array
+            items:
+              $ref: '#/components/schemas/Affiliate'
+        example:
+          name: Programa de afiliados
+          comission_type: PERCENTUAL
+          comission_value: 20.5
+          has_limit: 1
+          limit: 100
+          affiliates:
+            - email: email@email.com.br
+              discount_code: AFILIADO1
+              sold_tickets: 50
+              sales: 500
+
+      Affiliate:
+        type: object
+        properties:
+          email:
+            type: string
+          discount_code:
+            type: string
+          sold_tickets:
+            type: integer
+          sales:
+            type: number
+            format: double
+        example:
+          email: email@email.com.br
+          discount_code: AFILIADO1
+          sold_tickets: 50
+          sales: 500
+
+      Sort:
+        type: object
+        properties:
+          field_sort:
+            type: string
+          sort:
+            type: string
+        example:
+          field_sort: id
+          sort: ASC
+
+      Pagination:
+        type: object
+        properties:
+          has_next:
+            type: boolean
+          has_prev:
+            type: boolean
+          quantity:
+            type: integer
+          offset:
+            type: integer
+          page:
+            type: integer
+          page_size:
+            type: integer
+          total_page:
+            type: integer
+        example:
+          has_next: true
+          has_prev: false
+          quantity: 10
+          offset: 1
+          page: 1
+          page_size: 100
+          total_page: 2
+
+      Error:
+        type: object
+        properties:
+          error:
+            type: boolean
+          code:
+            type: integer
+          message:
+            type: string
+        example:
+          error: true
+          code: 1
+          message: Token not found.
+contentType: yaml

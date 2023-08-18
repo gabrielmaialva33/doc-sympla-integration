@@ -1,0 +1,28 @@
+_id: req_3c8fbef3ea0c4669933521acacee2dbf
+type: Request
+parentId: fld_b90bdb1fa6364065ae7f5c5147a71d3a
+modified: 1692382565683
+created: 1692382565683
+url: "{{ _.base_url }}/public/v3/events/{{ _.event_id }}/affiliates"
+name: Listar afiliados por evento
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication:
+  type: apikey
+  key: s_token
+  value: "{{ _.sToken }}"
+  addTo: header
+metaSortKey: -1692382565683
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

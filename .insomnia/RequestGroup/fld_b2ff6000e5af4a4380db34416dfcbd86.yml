@@ -1,0 +1,13 @@
+_id: fld_b2ff6000e5af4a4380db34416dfcbd86
+type: RequestGroup
+parentId: wrk_b5a23e28943d43a7a81c1788b42d3b38
+modified: 1692382565672
+created: 1692382565672
+name: Pedidos
+description: A API de pedidos proporciona informações de compras (ou inscrições,
+  caso o evento seja gratuito) como dados de ingressos, participantes e
+  pagamento. Um pedido pode conter mais de um ingresso e um ingresso está sempre
+  associado a um único participante.
+environment: {}
+environmentPropertyOrder: null
+metaSortKey: -1692382565672

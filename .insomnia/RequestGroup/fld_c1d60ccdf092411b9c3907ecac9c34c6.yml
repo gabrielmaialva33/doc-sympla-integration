@@ -1,0 +1,12 @@
+_id: fld_c1d60ccdf092411b9c3907ecac9c34c6
+type: RequestGroup
+parentId: wrk_b5a23e28943d43a7a81c1788b42d3b38
+modified: 1692382565672
+created: 1692382565672
+name: Eventos
+description: Esta API fornece acesso às informações de eventos criados na
+  plataforma Sympla, exclusivamente aqueles vinculados ao usuário proprietário
+  do token.
+environment: {}
+environmentPropertyOrder: null
+metaSortKey: -1692382565672

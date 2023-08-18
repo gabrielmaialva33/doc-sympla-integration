@@ -1,0 +1,49 @@
+_id: req_4627fc0e0c7c43d98d2d432f3f1a499b
+type: Request
+parentId: fld_c1d60ccdf092411b9c3907ecac9c34c6
+modified: 1692382565674
+created: 1692382565674
+url: "{{ _.base_url }}/public/v3/events"
+name: Listar eventos
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: from
+    disabled: true
+    value: 2020-01-01 00:00:00
+  - name: published
+    disabled: true
+    value: "true"
+  - name: page_size
+    disabled: true
+    value: "100"
+  - name: page
+    disabled: true
+    value: "1"
+  - name: field_sort
+    disabled: true
+    value: start_date
+  - name: sort
+    disabled: true
+    value: ASC
+  - name: fields
+    disabled: true
+    value: id,name
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication:
+  type: apikey
+  key: s_token
+  value: "{{ _.sToken }}"
+  addTo: header
+metaSortKey: -1692382565674
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

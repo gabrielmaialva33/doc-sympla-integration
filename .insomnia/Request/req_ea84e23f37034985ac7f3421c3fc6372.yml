@@ -1,0 +1,29 @@
+_id: req_ea84e23f37034985ac7f3421c3fc6372
+type: Request
+parentId: fld_b6e7334d56994374afd3168d027a7554
+modified: 1692382565680
+created: 1692382565680
+url: "{{ _.base_url }}/public/v3/events/{{ _.event_id }}/participants/{{
+  _.participant_id }}/checkIn"
+name: Check-in por id do ingresso.
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication:
+  type: apikey
+  key: s_token
+  value: "{{ _.sToken }}"
+  addTo: header
+metaSortKey: -1692382565680
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,35 @@
+_id: req_bb57111e96dd47baba589b1646e5d373
+type: Request
+parentId: fld_b6e7334d56994374afd3168d027a7554
+modified: 1692382565679
+created: 1692382565679
+url: "{{ _.base_url }}/public/v3/events/{{ _.event_id
+  }}/participants/ticketNumber/{{ _.ticket_number }}"
+name: Listar participante por número de ingresso
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: cancelled_filter
+    disabled: true
+    value: none
+  - name: fields
+    disabled: true
+    value: id,name
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication:
+  type: apikey
+  key: s_token
+  value: "{{ _.sToken }}"
+  addTo: header
+metaSortKey: -1692382565679
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,15 @@
+_id: env_1d478c6fcd7644608fc151923f69b4c8
+type: Environment
+parentId: env_9268a9e7c195ee50c87db4160791171010a69330
+modified: 1692382565671
+created: 1692382565671
+name: OpenAPI env api.sympla.com.br
+data:
+  scheme: https
+  base_path: ""
+  host: api.sympla.com.br
+  sToken: sToken
+dataPropertyOrder: null
+color: null
+isPrivate: false
+metaSortKey: 1692382565671

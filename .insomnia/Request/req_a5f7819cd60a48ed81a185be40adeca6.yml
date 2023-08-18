@@ -1,0 +1,52 @@
+_id: req_a5f7819cd60a48ed81a185be40adeca6
+type: Request
+parentId: fld_b6e7334d56994374afd3168d027a7554
+modified: 1692382565678
+created: 1692382565678
+url: "{{ _.base_url }}/public/v3/events/{{ _.event_id }}/participants"
+name: Listar participantes por evento
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: page_size
+    disabled: true
+    value: "100"
+  - name: page
+    disabled: true
+    value: "1"
+  - name: field_sort
+    disabled: true
+    value: start_date
+  - name: sort
+    disabled: true
+    value: ASC
+  - name: fields
+    disabled: true
+    value: id,name
+  - name: cancelled_filter
+    disabled: true
+    value: none
+  - name: ticket_number
+    disabled: true
+    value: string
+  - name: participant_email
+    disabled: true
+    value: string
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication:
+  type: apikey
+  key: s_token
+  value: "{{ _.sToken }}"
+  addTo: header
+metaSortKey: -1692382565678
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

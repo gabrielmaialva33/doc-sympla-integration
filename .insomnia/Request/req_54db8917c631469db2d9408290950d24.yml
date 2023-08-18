@@ -1,0 +1,31 @@
+_id: req_54db8917c631469db2d9408290950d24
+type: Request
+parentId: fld_c1d60ccdf092411b9c3907ecac9c34c6
+modified: 1692382565675
+created: 1692382565675
+url: "{{ _.base_url }}/public/v3/events/{{ _.event_id }}"
+name: Listar evento por identificador
+description: ""
+method: GET
+body: {}
+parameters:
+  - name: fields
+    disabled: true
+    value: id,name
+headers:
+  - name: Content-Type
+    disabled: false
+    value: application/json
+authentication:
+  type: apikey
+  key: s_token
+  value: "{{ _.sToken }}"
+  addTo: header
+metaSortKey: -1692382565675
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
